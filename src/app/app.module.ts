@@ -5,15 +5,23 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ClarityModule } from '@clr/angular';
 import { AppComponent } from './app.component';
-import { ROUTING } from "./app.routing";
-import { HomeComponent } from "./home/home.component";
-import { AboutComponent } from "./about/about.component";
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { TabsComponent } from './tabs/tabs.component';
+import { GraphOptionsComponent } from './graph-options/graph-options.component';
+
+import { SidenavInteractionService } from './sidenav-interaction.service';
+import { DatagridComponent } from './datagrid/datagrid.component';
+import { ClusterDetailComponent } from './cluster-detail/cluster-detail.component';
+
 
 @NgModule({
     declarations: [
         AppComponent,
-        AboutComponent,
-        HomeComponent
+        SidenavComponent,
+        TabsComponent,
+        GraphOptionsComponent,
+        DatagridComponent,
+        ClusterDetailComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -21,9 +29,8 @@ import { AboutComponent } from "./about/about.component";
         FormsModule,
         HttpModule,
         ClarityModule,
-        ROUTING
     ],
-    providers: [],
+    providers: [SidenavInteractionService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

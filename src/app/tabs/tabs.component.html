@@ -1,0 +1,29 @@
+<clr-tabs>
+
+  <clr-tab>
+    <button clrTabLink> Details </button>
+    <clr-tab-content>
+
+      <div *ngIf="componentsVisible">
+        <div *ngIf="context == 'Provider'">
+          <app-graph-options></app-graph-options>
+        </div>
+        <div *ngIf="context == 'Consumer'">
+          <app-datagrid [ip] = "service.entityID">DataGrid should come here</app-datagrid>
+        </div>
+        <div *ngIf="context == 'Cluster'"> 
+          <app-cluster-detail [id] = "service.entityID"></app-cluster-detail>
+        </div>
+      </div>
+
+    </clr-tab-content>
+  </clr-tab>
+
+  <clr-tab>
+    <button clrTabLink> Performance </button>
+    <clr-tab-content>
+
+    </clr-tab-content>
+  </clr-tab>
+
+</clr-tabs>

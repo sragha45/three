@@ -1,0 +1,37 @@
+<clr-tree-node>
+
+  <clr-icon shape="cloud-scale"></clr-icon>
+  <a class="nav-link active">Clusters</a>
+
+  <ng-template [(clrIfExpanded)]='clusters.expanded'>
+    
+
+    <clr-tree-node *ngFor="let cluster of clusters.clustersInfo">
+      <clr-icon shape="rack-server"></clr-icon>
+      <a class="nav-link" (click)="clusterSelected($event, cluster)">{{ cluster.clusterName }}</a>
+
+
+      <!-- temporary fix. later turn this into a new component !-->
+
+      <ng-template [(clrIfExpanded)]='cluster.showChild'>
+
+        <clr-tree-node *ngFor="let host of cluster.hosts">
+          <clr-icon [attr.shape]="host.isProvider ? 'memory' : 'computer' "></clr-icon>
+          <a class="nav-link" (click)="hostSelected($event, host); $event.stopPropagation()"> {{ host.hostName }} </a>
+
+          <ng-template [(clrIfExpanded)]="host.showVM">
+
+            <clr-tree-node *ngFor="let vm of host.vmList">
+              <clr-icon shape="vm"></clr-icon>
+              <a class="nav-link" (click)="vmSelected($event, vm); $event.stopPropagation()"> {{ vm }} </a>
+            </clr-tree-node>
+          </ng-template>
+        </clr-tree-node>
+
+      </ng-template>
+
+    
+
+    </clr-tree-node>
+  </ng-template>
+</clr-tree-node>
