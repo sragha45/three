@@ -24,16 +24,16 @@ export function drawGraph(obj) {
         data.addColumn('number', 'Amount');
         data.addColumn({ type: 'string', role: 'tooltip' })
         data.addRows([
-            ['Memory Available', obj.remoteMemoryConsuming, "Memory Available: " + obj.remoteMemoryConsuming + "GB"],
-            ['Memory Contributed', obj.remoteMemoryContrib, "Memory Contribution: " + obj.remoteMemoryContrib + "GB"],
+            ['Memory Consuming', obj.remoteMemoryConsuming, "Memory Consuming: " + obj.remoteMemoryConsuming + "MB"],
+            ['Memory Contributed', obj.remoteMemoryContrib, "Memory Contribution: " + obj.remoteMemoryContrib + "MB"],
 
         ]);
 
         // Set chart options
         var options = {
             'title': '',
-            'width': 600,
-            'height': 600,
+            'width': 500,
+            'height': 500,
             'pieHole': 0.4,
             'backgroundColor': '#FAFAFA',
             'colors': ['#3472db', '#76a5f4']
@@ -62,8 +62,8 @@ export function drawGraph(obj) {
         // Set chart options
         var options = {
             'title': '',
-            'width': 600,
-            'height': 600,
+            'width': 500,
+            'height': 500,
             'pieHole': 0.4,
             'backgroundColor': '#FAFAFA',
             'colors': ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']

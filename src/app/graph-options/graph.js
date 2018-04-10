@@ -5,7 +5,7 @@ export function drawGraph(obj) {
 
     
     
-    console.log(obj);
+    // console.log(obj);
     
     // Load the Visualization API and the corechart package.
     google.charts.load('current', { 'packages': ['corechart'] });
@@ -24,8 +24,8 @@ export function drawGraph(obj) {
         data.addColumn('number', 'Amount');
         data.addColumn({type: 'string', role: 'tooltip'})
         data.addRows([
-            ['Memory Available', obj.memAvail, "Memory Consuming: " + obj.memAvail + "GB"],
-            ['Memory Contributed', obj.memContrib, "Memory Contribution: " + obj.memContrib + "GB"],
+            ['Memory Free', obj.memoryAvailable - obj.memoryContributed, "Memory Free: " + (obj.memoryAvailable - obj.memoryContributed) + "MB"],
+            ['Memory Contributed', obj.memoryContributed, "Memory Contribution: " + obj.memoryContributed + "MB"],
             
         ]);
 

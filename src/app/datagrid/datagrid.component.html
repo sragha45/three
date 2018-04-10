@@ -3,36 +3,36 @@
 <clr-datagrid>
     <clr-dg-column >VM </clr-dg-column>
     <clr-dg-column>Local Memory</clr-dg-column>
-    <clr-dg-column>Remote Memory</clr-dg-column>
-    <clr-dg-column>Ratio</clr-dg-column>
+    <clr-dg-column>Remote Memory (MB)</clr-dg-column>
+    <!-- <clr-dg-column>Ratio</clr-dg-column> -->
     <clr-dg-column>Reads</clr-dg-column>
     <clr-dg-column>Writes</clr-dg-column>
-    <clr-dg-column>Latency</clr-dg-column>
+    <clr-dg-column>Latency (ms)</clr-dg-column>
   
     <clr-dg-row *clrDgItems="let vm of vmData">
       <clr-dg-cell>{{ vm.id }} </clr-dg-cell>
       <clr-dg-cell>{{ vm.localMemory }} </clr-dg-cell>
       <clr-dg-cell>{{ vm.remoteMemory }} </clr-dg-cell>
-      <clr-dg-cell>{{ vm.ratioRemoteMemory }} </clr-dg-cell>
+      <!-- <clr-dg-cell>{{ vm.ratioRemoteMemory }} </clr-dg-cell> -->
       <clr-dg-cell>{{ vm.read }} </clr-dg-cell>
       <clr-dg-cell>{{ vm.write }} </clr-dg-cell>
       <clr-dg-cell>{{ vm.latency }} </clr-dg-cell>
   
-      <clr-dg-row-detail *clrIfExpanded>
+      <clr-dg-row-detail *clrIfExpanded="tableExpanded">
   
   
           <div class = "inside_table">
             <clr-datagrid>
               <clr-dg-column>IP</clr-dg-column>
-              <clr-dg-column>remoteMemory</clr-dg-column>
-              <clr-dg-column>contribution</clr-dg-column>
-              <clr-dg-column>read</clr-dg-column>
-              <clr-dg-column>write</clr-dg-column>
-              <clr-dg-column>latency</clr-dg-column>
+              <!-- <clr-dg-column>remoteMemory</clr-dg-column> -->
+              <clr-dg-column>Memory Contribution (MB)</clr-dg-column>
+              <clr-dg-column>Read</clr-dg-column>
+              <clr-dg-column>Write</clr-dg-column>
+              <clr-dg-column>Latency (ms)</clr-dg-column>
   
               <clr-dg-row *clrDgItems="let server of vm.serverDetails">
                 <clr-dg-cell> {{server.ip }}</clr-dg-cell>
-                <clr-dg-cell> {{server.remoteMemory }}</clr-dg-cell>
+                <!-- <clr-dg-cell> {{server.remoteMemory }}</clr-dg-cell> -->
                 <clr-dg-cell> {{server.contribution }}</clr-dg-cell>
                 <clr-dg-cell> {{server.read }}</clr-dg-cell>
                 <clr-dg-cell> {{server.write }}</clr-dg-cell>

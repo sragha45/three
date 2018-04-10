@@ -28,13 +28,13 @@ export class Data {
                             hostName: '198.168.21.44',
                             showVM: false,
                             isProvider: true,
-                            vmList: [{}]
+                            vmList: []
                         },
                         {
                             hostName: '192.168.24.37',
                             showVM: false,
                             isProvider: true,
-                            vmList: [{}]
+                            vmList: []
                         }
                     ]
 
@@ -47,25 +47,25 @@ export class Data {
                             hostName: '172.21.33.21',
                             isProvider: false,
                             showVM: false,
-                            vmList: [{}]
+                            vmList: []
                         },
                         {
                             hostName: '172.21.34.156',
                             isProvider: false,
                             showVM: false,
-                            vmList: [{}]
+                            vmList: []
                         },
                         {
                             hostName: '198.168.21.44',
                             isProvider: true,
                             showVM: false,
-                            vmList: [{}]
+                            vmList: []
                         },
                         {
                             hostName: '192.168.24.37',
                             isProvider: true,
                             showVM: false,
-                            vmList: [{}]
+                            vmList: []
                         }
                     ]
                 }
@@ -88,54 +88,81 @@ export class Data {
         }
     ];
 
-    public clusterInfo = [
-        {
-            id: "Cluster 1",
-            remoteMemoryContrib: 300,
-            remoteMemoryConsuming: 500,
-            io_bandwidth: 1024,
-            io_reads: 255,
-            io_writes: 750
-        },
-        {
-            id: "Cluster 2",
-            remoteMemoryContrib: 200,
-            remoteMemoryConsuming: 600,
-            io_bandwidth: 2048,
-            io_reads: 750,
-            io_writes: 750
-        }
-    ]
+    public clusterInfo = [];
 
-    public consumerInfo = [
+    public loadClusterInfo(clusterInfoObj) {
+        for(let obj of clusterInfoObj) {
+            let clusterobj = {};
+            clusterobj['id'] = obj.clusterName;
+            clusterobj['remoteMemoryContrib'] = obj.memoryContributed;
+            clusterobj['remoteMemoryConsuming'] = obj.memoryConsumed;
+            clusterobj['io_reads'] = 255;
+            clusterobj['io_writes'] = 750;
+
+            this.clusterInfo.push(clusterobj);
+        }
+        // console.log(this.clusterInfo);
+    }
+    // get consumerInfo(): any { return this.consumerInfo; }
+    // set consumerInfo(val) { this.consumerInfo = val; }
+
+    public static fillConsumerInfo(ip, vmlist, vmDetails, latencyStats, pmemStatsInfo, providerList) {
+        console.log(ip);
+        console.log(vmlist);
+        console.log(vmDetails);
+        console.log(latencyStats);
+        console.log(pmemStatsInfo);
+        console.log(providerList);
+
+        this.consumerInfoTest['ip'] = ip;
+        let vmInfo = {}
+        for(let vm of vmlist) {
+            vmInfo['id'] = vm;
+            vmInfo['read'] = 0
+            vmInfo['write'] = 0
+            vmInfo['localMemory'] = 0;              // Change this later.
+            vmInfo['remoteMemory'] = vmDetails[vm].vmAUsInfo.length * 256 
+            vmInfo['latency'] = latencyStats[vm].stats.totalTimeOfFaults + 
+                                latencyStats[vm].stats.totalTimeOfSwapOuts;
+            
+            let serverDetails = {}
+            for(let provider of providerList) {
+                serverDetails['ip'] = provider.ip;
+            }
+        }
+    }
+
+    public static consumerInfoTest = {}
+
+    public static consumerInfo = [
         {
-            ip: "172.21.33.21",
+            ip: "10.107.46.1",
             vmInfo: [
                 {
-                    id: "VM 1",
-                    localMemory: "1GB",
-                    remoteMemory: "4GB",
-                    ratioRemoteMemory: "20%",
-                    read: '30%',
-                    write: '70%',
-                    latency: "700ms",
+                    id: "vm1",
+                    localMemory: "0",
+                    remoteMemory: "0",
+                    ratioRemoteMemory: "0",
+                    read: '0',
+                    write: '0',
+                    latency: "0",
                     serverDetails: [
-                        {
-                            ip: 'server1',
-                            remoteMemory: '1GB',
-                            contribution: '50%',
-                            read: '40%',
-                            write: '60%',
-                            latency: '400ms'
-                        },
-                        {
-                            ip: 'server2',
-                            remoteMemory: '3GB',
-                            contribution: '50%',
-                            read: '50%',
-                            write: '50%',
-                            latency: '700ms'
-                        }
+                        // {
+                        //     ip: 'server1',
+                        //     remoteMemory: '1GB',
+                        //     contribution: '50%',
+                        //     read: '40%',
+                        //     write: '60%',
+                        //     latency: '400ms'
+                        // },
+                        // {
+                        //     ip: 'server2',
+                        //     remoteMemory: '3GB',
+                        //     contribution: '50%',
+                        //     read: '50%',
+                        //     write: '50%',
+                        //     latency: '700ms'
+                        // }
                     ]
                 }
             ]
