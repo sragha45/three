@@ -8,22 +8,25 @@ import { FetchRemoteDataService } from '../fetch-remote-data.service';
   selector: 'app-graph-options',
   templateUrl: './graph-options.component.html',
   styleUrls: ['./graph-options.component.scss'],
-  providers: [ FetchRemoteDataService ]
+  providers: [FetchRemoteDataService]
 })
 export class GraphOptionsComponent implements OnInit {
   private id;
   private res;
 
   constructor(private service: SidenavInteractionService,
-              private remoteService: FetchRemoteDataService) {
+    private remoteService: FetchRemoteDataService) {
     this.id = service.entityID;
 
     this.remoteService.getProviderInfo(this.id).subscribe(providerInfo => {
       // console.log(providerInfo);
       let graphModule = require("./graph.js");
 
-      if(this.id == providerInfo.ip)
-        graphModule.drawGraph(providerInfo);  
+      providerInfo.filter(obj => {
+        if (obj.ip == this.id) {
+          graphModule.drawGraph(obj);
+        }
+      })
     });
 
     // let data = new Data();
@@ -35,7 +38,7 @@ export class GraphOptionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

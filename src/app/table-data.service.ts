@@ -9,7 +9,7 @@ export class TableDataService {
 
   constructor(private http: Http) { }
 
-  apiURL = "http://10.107.44.15:5000/";
+  apiURL = "http://10.172.209.108:5000/";
 
   getVMList(consumer_ip): Observable<any> {
     let apiURLPath = this.apiURL + 'vmList/' + consumer_ip;

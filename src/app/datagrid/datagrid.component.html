@@ -2,12 +2,12 @@
 
 <clr-datagrid>
     <clr-dg-column >VM </clr-dg-column>
-    <clr-dg-column>Local Memory</clr-dg-column>
+    <clr-dg-column>Local Memory (MB)</clr-dg-column>
     <clr-dg-column>Remote Memory (MB)</clr-dg-column>
     <!-- <clr-dg-column>Ratio</clr-dg-column> -->
-    <clr-dg-column>Reads</clr-dg-column>
-    <clr-dg-column>Writes</clr-dg-column>
-    <clr-dg-column>Latency (ms)</clr-dg-column>
+    <clr-dg-column>No. of Page faults</clr-dg-column>
+    <clr-dg-column>No. of Swapouts</clr-dg-column>
+    <clr-dg-column>Avg page fault Latency (ms)</clr-dg-column>
   
     <clr-dg-row *clrDgItems="let vm of vmData">
       <clr-dg-cell>{{ vm.id }} </clr-dg-cell>
@@ -26,9 +26,9 @@
               <clr-dg-column>IP</clr-dg-column>
               <!-- <clr-dg-column>remoteMemory</clr-dg-column> -->
               <clr-dg-column>Memory Contribution (MB)</clr-dg-column>
-              <clr-dg-column>Read</clr-dg-column>
-              <clr-dg-column>Write</clr-dg-column>
-              <clr-dg-column>Latency (ms)</clr-dg-column>
+              <clr-dg-column>No. of Reads</clr-dg-column>
+              <clr-dg-column>No. of Writes</clr-dg-column>
+              <!-- <clr-dg-column>Latency (ms)</clr-dg-column> -->
   
               <clr-dg-row *clrDgItems="let server of vm.serverDetails">
                 <clr-dg-cell> {{server.ip }}</clr-dg-cell>
@@ -36,7 +36,7 @@
                 <clr-dg-cell> {{server.contribution }}</clr-dg-cell>
                 <clr-dg-cell> {{server.read }}</clr-dg-cell>
                 <clr-dg-cell> {{server.write }}</clr-dg-cell>
-                <clr-dg-cell> {{server.latency }}</clr-dg-cell>
+                <!-- <clr-dg-cell> {{server.latency }}</clr-dg-cell> -->
               </clr-dg-row>
             </clr-datagrid>
           </div>

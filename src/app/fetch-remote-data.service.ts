@@ -12,7 +12,7 @@ export class FetchRemoteDataService {
     
   }
 
-  apiURL = "http://10.107.44.15:5000";
+  apiURL = "http://10.172.209.108:5000";
 
   getData(path: string): Observable<ClusterInfoType[]> {
     let apiURLPath = this.apiURL + "/sidenav";

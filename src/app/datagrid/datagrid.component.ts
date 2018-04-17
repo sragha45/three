@@ -7,7 +7,7 @@ import { FetchRemoteDataService } from '../fetch-remote-data.service';
   selector: 'app-datagrid',
   templateUrl: './datagrid.component.html',
   styleUrls: ['./datagrid.component.scss'],
-  providers: [ TableDataService, FetchRemoteDataService ]
+  providers: [TableDataService, FetchRemoteDataService]
 })
 export class DatagridComponent implements OnInit {
 
@@ -26,8 +26,8 @@ export class DatagridComponent implements OnInit {
 
 
   constructor(private tableDataService: TableDataService,
-              private remoteService: FetchRemoteDataService) {
-    
+    private remoteService: FetchRemoteDataService) {
+
   }
 
   ngOnInit() {
@@ -37,11 +37,11 @@ export class DatagridComponent implements OnInit {
   }
 
   valueUpdated() {
-    
+
     this.tableDataService.getVMList(this.ip).subscribe(data => {
       this.vmlist = data.vmList;
     })
-    
+
     this.tableDataService.getLatencyStats(this.ip).subscribe(data => {
       this.latencyStats = data;
     })
@@ -56,9 +56,9 @@ export class DatagridComponent implements OnInit {
 
     this.tableDataService.getProviderList(this.ip).subscribe(data => {
       this.providerList = data;
-      this.fillConsumerInfo(this.ip, this.vmlist, this.vmDetails, this.latencyStats, this.pmemStatsInfo, this.providerList);      
+      this.fillConsumerInfo(this.ip, this.vmlist, this.vmDetails, this.latencyStats, this.pmemStatsInfo, this.providerList);
     })
-      
+
   }
 
   ngOnDestroy() {
@@ -76,50 +76,58 @@ export class DatagridComponent implements OnInit {
     Data.consumerInfoTest['ip'] = ip;
     Data.consumerInfoTest['vmInfo'] = []
     let vmInfo = {}
+    Data.totalRemoteConsumption = 0;
     vmInfo['serverDetails'] = []
-    for(let vm of vmlist) {
-        vmInfo['id'] = vm;
-        vmInfo['read'] = latencyStats[vm].stats.noOfFaults;
-        vmInfo['write'] = latencyStats[vm].stats.noOfSwapOuts;
-        vmInfo['localMemory'] = latencyStats[vm].localMem;              // Change this later.
-        vmInfo['remoteMemory'] = vmDetails[vm].vmAUsInfo.length * 256 
-        vmInfo['latency'] = Math.round(latencyStats[vm].stats.totalTimeOfFaults / 
-                            latencyStats[vm].stats.noOfFaults) / 1000000;
-        
-        let serverDetails = {}
-        for(let provider of providerList[vm].vmChannelInfo) {
-          serverDetails['ip'] = provider.ipAddress;
-          
-          this.remoteService.getProviderInfo(provider.ipAddress).subscribe(providerInfo => {
-            // console.log(providerInfo);
-            serverDetails['contribution'] = providerInfo.memoryContributed;
-          })
+    for (let vm of vmlist) {
+      vmInfo['id'] = vm;
+      vmInfo['read'] = latencyStats[vm].stats.noOfFaults;
+      vmInfo['write'] = latencyStats[vm].stats.noOfSwapOuts;
+      vmInfo['localMemory'] = latencyStats[vm].localMem;
+      vmInfo['remoteMemory'] = vmDetails[vm].vmAUsInfo.length * 256
+      Data.totalRemoteConsumption += vmInfo['remoteMemory']
+      vmInfo['latency'] = Math.round(latencyStats[vm].stats.totalTimeOfFaults /
+        latencyStats[vm].stats.noOfFaults) / 1000000;
 
-          this.tableDataService.getpmemStatsInfo(provider.ipAddress).subscribe(data => {
-            console.log(data);
-            serverDetails['read'] = 0;
-            serverDetails['write'] = 0; 
-            for(let x of data[0][vm].pmemStatsInfo) {
-              serverDetails['read'] += x.noOfReads;
-              serverDetails['write'] += x.noOfWrites;
+      for (let provider of providerList[vm].vmChannelInfo) {
+      let serverDetails = {}
+        
+        serverDetails['ip'] = provider.ipAddress;
+        
+        this.remoteService.getProviderInfo(provider.ipAddress).subscribe(providerInfo => {
+          // console.log(providerInfo);
+          
+          providerInfo.filter(obj => {
+            if(obj.ip == provider.ipAddress) {
+              serverDetails['contribution'] = obj.memoryContributed;
             }
           })
 
-          this.tableDataService.getLatencyStats(provider.ipAddress).subscribe(data => {
-            // console.log(data[vm]);
-            serverDetails['latency'] = data[vm].stats.totalTimeOfFaults + 
-                                       data[vm].stats.totalTimeOfSwapOuts;
-          })
-        }
-        vmInfo['serverDetails'].push(serverDetails); 
+        })
+
+        this.tableDataService.getpmemStatsInfo(provider.ipAddress).subscribe(data => {
+          // console.log(data);
+          serverDetails['read'] = 0;
+          serverDetails['write'] = 0;
+          for (let x of data[0][vm].pmemStatsInfo) {
+            serverDetails['read'] += x.noOfReads;
+            serverDetails['write'] += x.noOfWrites;
+          }
+        })
+
+        this.tableDataService.getLatencyStats(provider.ipAddress).subscribe(data => {
+          // console.log(data[vm]);
+          serverDetails['latency'] = data[vm].stats.totalTimeOfFaults +
+            data[vm].stats.totalTimeOfSwapOuts;
+        })
+        vmInfo['serverDetails'].push(serverDetails);
+        // console.log(serverDetails)
+      }
+      // console.log(vmInfo['serverDetails']);
     }
     Data.consumerInfoTest['vmInfo'].push(vmInfo);
     this.vmData = Data.consumerInfoTest["vmInfo"];
     console.log(Data.consumerInfoTest);
   }
-
-
-  
 
   ngOnChanges() {
     this.valueUpdated();

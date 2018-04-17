@@ -132,6 +132,8 @@ export class Data {
         }
     }
 
+    public static totalRemoteConsumption
+
     public static consumerInfoTest = {}
 
     public static consumerInfo = [

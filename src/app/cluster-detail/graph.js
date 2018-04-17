@@ -24,8 +24,8 @@ export function drawGraph(obj) {
         data.addColumn('number', 'Amount');
         data.addColumn({ type: 'string', role: 'tooltip' })
         data.addRows([
-            ['Memory Consuming', obj.remoteMemoryConsuming, "Memory Consuming: " + obj.remoteMemoryConsuming + "MB"],
-            ['Memory Contributed', obj.remoteMemoryContrib, "Memory Contribution: " + obj.remoteMemoryContrib + "MB"],
+            ['Memory Consumed', obj.remoteMemoryConsuming, "Memory Consumed: " + obj.remoteMemoryConsuming+ "MB"],
+            ['Memory Free', obj.remoteMemoryContrib, "Memory Free: " + obj.remoteMemoryContrib + "MB"],
 
         ]);
 
